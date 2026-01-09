@@ -24,10 +24,4 @@
 # NOTE: modifying ignore files will not change the ignore status of 
 #     Eclipse derived resources.
 
-core.ignore.recursive= \
-	{*.class} 
-core.ignore= \
-	{.project} \
-	{.settings} \
-	{bin} \
-	{target}
+target/

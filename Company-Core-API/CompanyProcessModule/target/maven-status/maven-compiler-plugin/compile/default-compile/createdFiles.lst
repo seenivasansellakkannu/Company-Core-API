@@ -1,1 +1,8 @@
-com\company\core\process\main\CompanyProcessApiApplication.class
+com\company\core\process\multitenantmanager\MultiTenantManager$1.class
+com\company\core\process\dto\TenantsDto.class
+com\company\core\process\CompanyProcessApiApplication.class
+com\company\core\process\repo\HealthCheckRepo.class
+com\company\core\process\service\HealthCheckApiService.class
+com\company\core\process\multitenantmanager\MultiTenantManager.class
+com\company\core\process\security\SecurityConfigDev.class
+com\company\core\process\api\HealthCheckApiController.class

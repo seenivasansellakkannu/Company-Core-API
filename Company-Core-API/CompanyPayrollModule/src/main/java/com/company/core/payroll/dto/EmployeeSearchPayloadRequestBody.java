@@ -17,7 +17,7 @@ public class EmployeeSearchPayloadRequestBody {
 	public Integer employeeId;
 
 	@JsonProperty("name")
-	public String employeeName;
+	public String name;
 	
 	@JsonProperty("level")
 	public String level;

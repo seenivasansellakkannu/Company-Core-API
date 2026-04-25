@@ -237,7 +237,7 @@ public class MultiTenantManager {
 	private DriverManagerDataSource defaultDataSource() {
 		var defaultDataSource = new DriverManagerDataSource();
 		defaultDataSource.setDriverClassName("org.h2.Driver");
-		defaultDataSource.setUrl("jdbc:h2:mem:default");
+		defaultDataSource.setUrl("jdbc:h2:mem:testdb");
 		defaultDataSource.setUsername("default");
 		defaultDataSource.setPassword("default");
 		return defaultDataSource;

@@ -12,14 +12,6 @@
 	<name>CompanyProcessModule</name>
 	<description>Company Process API</description>
 
-	<dependencies>
-		<dependency>
-			<groupId>com.company.core</groupId>
-			<artifactId>CompanyPayrollModule</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>

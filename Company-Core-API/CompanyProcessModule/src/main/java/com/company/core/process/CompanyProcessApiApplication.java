@@ -33,7 +33,7 @@ import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.company")
 @ComponentScan("com.company")
 @EnableAsync
 public class CompanyProcessApiApplication {
@@ -111,7 +111,7 @@ public class CompanyProcessApiApplication {
 
 			setupDBConfig(tempTenantID);
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 
 			var datetime2 = LocalDateTime.now();
 

@@ -13,7 +13,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.sql.DataSource;
+
 import org.apache.commons.lang3.StringUtils;
+import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,7 +33,7 @@ import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.company")
 @ComponentScan("com.company")
 @EnableAsync
 public class CompanyProcessApiApplication {
@@ -106,9 +109,9 @@ public class CompanyProcessApiApplication {
 					datetime1.format(newPattern) + " Account Module Main method onReady Loaded DataSource for tenant >>"
 							+ tempTenantID.getTenantId());
 
-//			setupDBConfig(tempTenantID);
+			setupDBConfig(tempTenantID);
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 
 			var datetime2 = LocalDateTime.now();
 
@@ -139,58 +142,52 @@ public class CompanyProcessApiApplication {
 		return map;
 	}
 
-//	/**
-//	 * Below method is use to setup the DB configuration using Flyway.
-//	 * 
-//	 * @param tenantObj
-//	 */
-//	public void setupDBConfig(TenantsDTO tenantObj) {
-//
-//		var scriptLocation = "classpath:db/migration/common/";
-//
-//		try {
-//
-//			var flyway = Flyway.configure().table("flyway_schema_history_UPM").ignoreMissingMigrations(true)
-//					.locations(scriptLocation).baselineOnMigrate(Boolean.TRUE)
-//					.dataSource((DataSource) tenantManager.tenantDataSources.get(tenantObj.getTenantId())).load();
-//
-//			log.info("activeProfile >>> " + activeProfile);
-//
-//			if (StringUtils.hasText(activeProfile) && !"default".equalsIgnoreCase(activeProfile)) { // do not execute
-//																									// this in Dev or
-//																									// SQA
-//
-//				flywayRepair(tenantObj, flyway);
-//
-//			}
-//
-//			flyway.migrate();
-//
-//		} catch (Exception excp) {
-//
-//			log.error("Eception occured while running Flyway script for Tenant >>" + tenantObj.getTenantId() + ">>>>>"
-//					+ excp.getLocalizedMessage());
-//		}
-//
-//		log.debug("All DB Configuration Script run is completed successfully!!!");
-//
-//	}
-//
-////	@Profile("!default, !unknown")
-//	public void flywayRepair(TenantsDTO tenantObj, Flyway flyway) {
-//
-//		try {
-//
-//			flyway.repair();
-//
-//		} catch (Exception excp) {
-//
-//			log.error("Eception occured while running flywayRepair for Tenant >>" + tenantObj.getTenantId() + ">>>>>"
-//					+ excp.getLocalizedMessage());
-//		}
-//
-//		log.debug("All DB Configuration flywayRepair Script run is completed successfully!!!");
-//
-//	}
+	/**
+	 * Below method is use to setup the DB configuration using Flyway.
+	 * 
+	 * @param tenantObj
+	 */
+	public void setupDBConfig(TenantsDto tenantObj) {
+
+		var scriptLocation = "classpath:db/migration/common/";
+
+		try {
+
+			var flyway = Flyway.configure().table("flyway_schema_history_common").ignoreMissingMigrations(true)
+					.locations(scriptLocation).baselineOnMigrate(Boolean.TRUE)
+					.dataSource((DataSource) tenantManager.tenantDataSources.get(tenantObj.getTenantId())).load();
+
+			log.info("activeProfile >>> " + activeProfile);
+
+			if (!StringUtils.isEmpty(activeProfile) && !"default".equalsIgnoreCase(activeProfile)) { // do not execute this in Dev or SQA
+				flywayRepair(tenantObj, flyway);
+			}
+			flyway.migrate();
+		} catch (Exception excp) {
+
+			log.error("Eception occured while running Flyway script for Tenant >>" + tenantObj.getTenantId() + ">>>>>"
+					+ excp.getLocalizedMessage());
+		}
+
+		log.debug("All DB Configuration Script run is completed successfully!!!");
+
+	}
+
+//	@Profile("!default, !unknown")
+	public void flywayRepair(TenantsDto tenantObj, Flyway flyway) {
+
+		try {
+
+			flyway.repair();
+
+		} catch (Exception excp) {
+
+			log.error("Eception occured while running flywayRepair for Tenant >>" + tenantObj.getTenantId() + ">>>>>"
+					+ excp.getLocalizedMessage());
+		}
+
+		log.debug("All DB Configuration flywayRepair Script run is completed successfully!!!");
+
+	}
 
 }
